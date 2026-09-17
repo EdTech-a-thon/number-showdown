@@ -40,7 +40,7 @@
   let currentMax = $state(100)
   let activeTeam = $state(0)
   let roundStarter = $state(0)
-  let guessInput = $state('')
+  let guessInput = $state<number | undefined>(undefined)
   let guesses = $state<Guess[]>([])
   let winnerIndex = $state<number | null>(null)
   let errorMessage = $state('')
@@ -148,7 +148,7 @@
     currentMax = rangeMax
     guesses = []
     winnerIndex = null
-    guessInput = ''
+    guessInput = undefined
     errorMessage = ''
     activeTeam = roundStarter % teams.length
     requestAnimationFrame(() => document.querySelector<HTMLInputElement>('#guess')?.focus())
@@ -159,7 +159,7 @@
     if (winnerIndex !== null) return
 
     const value = Number(guessInput)
-    if (!guessInput.trim() || !Number.isInteger(value)) {
+    if (guessInput === undefined || !Number.isInteger(value)) {
       errorMessage = 'Enter a whole number to make a guess.'
       return
     }
@@ -184,7 +184,7 @@
     else currentMax = value - 1
 
     activeTeam = (activeTeam + 1) % teams.length
-    guessInput = ''
+    guessInput = undefined
     requestAnimationFrame(() => document.querySelector<HTMLInputElement>('#guess')?.focus())
   }
 
